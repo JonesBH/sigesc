@@ -1,5 +1,14 @@
 <?php
-$this->group(['prefix' => 'v1', 'namespace' => 'Api\v1'], function () {
+
+$this->post('auth', 'Auth\AuthApiController@authenticate');
+$this->post('auth-refresh', 'Auth\AuthApiController@refreshToken');
+$this->get('user', 'Auth\AuthApiController@getAuthenticatedUser');
+
+$this->group([
+    'prefix'     => 'v1',
+    'namespace'  => 'Api\v1',
+    'middleware' => 'auth:api',
+], function () {
     $this->get('condominios/{id}/unidades', 'CondominioController@unidades');
     $this->get('unidades/{id}/moradores', 'UnidadeController@moradores');
 
